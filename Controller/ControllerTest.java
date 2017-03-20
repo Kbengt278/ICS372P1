@@ -98,7 +98,13 @@ public class ControllerTest {
 //        response = testController.checkOut(1, "itemAvailable", 1);
 //        assertTrue(response.contains("checked out successfully"));
 
-        String response = "";
+        // check out item already checked out
+        response = testController.checkOut(1, "itemCheckedOutBy1", 1);
+        assertTrue(response.contains("already checked out"));
+
+        // use invalid card number
+        response = testController.checkOut(99, "itemCheckedOutBy1", 1);
+        assertTrue(response.contains("is invalid"));
 
     }
 
@@ -132,7 +138,7 @@ public class ControllerTest {
         String response = "";
         response = testController.addMember("testMember");
         assertTrue(response.contains("Library card number is: 3"));
-//        assertTrue(testController.checkLibraryCardNumber(3));
+ //       assertTrue(testController.checkLibraryCardNumber(3));
     }
 
     @Test
