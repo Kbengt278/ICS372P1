@@ -45,7 +45,7 @@ public class Library implements Serializable {
     {
     	String message = "";
         Item item = list.get(itemId);
-        
+
         if (item == null)
         	message += ("Item " + itemId + " does not exist\n");
         else if (!item.isAvailable())
@@ -57,7 +57,7 @@ public class Library implements Serializable {
             cal.add(Calendar.DAY_OF_YEAR, item.getCheckOutTimeDays());
             item.setAvailable(false);
             item.setDateDue(cal);
-            
+
             message += ("Item " + itemId + " "
                     + item.getType() + " : "
                     + item.getName() + "\n"
@@ -132,9 +132,8 @@ public class Library implements Serializable {
     	return list.size();
     }
     
-    public String toString(String itemId, Library library) {
-        Library lib = library;
-        Item item = lib.getItem(itemId);
+    public String toString(String itemId) {
+        Item item = this.getItem(itemId);
         return ("Item " + itemId + " "
                 + item.getType() + " : "
                 + item.getName() + "\n");

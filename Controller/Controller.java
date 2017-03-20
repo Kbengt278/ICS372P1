@@ -48,22 +48,20 @@ public class Controller implements Serializable {
      * @param library    Library to check item out of
      * @return String    display text
      */
-    public String checkOut(int cardNumber, String itemId, int library)
-    {
-    	String message = "";
-    	Member member = this.memberList.getMember(cardNumber);
-    	//check if card number is valid
-        if (member != null)
-        {
+    public String checkOut(int cardNumber, String itemId, int library) {
+        String message = "";
+        Member member = this.memberList.getMember(cardNumber);
+        // check if card number is valid
+        if (member != null) {
             Library lib = getLib(library);
             // check that library isn't null. Just to be safe.
-            if(lib == null)
-            	message += ("Library value is invalid\n");
+            if (lib == null)
+                message += ("Library value is invalid\n");
             else
-            	message = lib.checkOut(itemId, member);
+                message = lib.checkOut(itemId, member);
         } else
-        	message += ("Library card number " + cardNumber + " is invalid\n");
-            
+            message += ("Library card number " + cardNumber + " is invalid\n");
+
         Storage.save(this);
         return message;
     }
@@ -81,26 +79,25 @@ public class Controller implements Serializable {
         String message = "";
         Library lib = getLib(library);
         Boolean isCheckedOut = lib.checkIn(itemId);
-      
+
         if (isCheckedOut == null)
-        	message += "Item " + itemId + " does not exist\n";
+            message += "Item " + itemId + " does not exist\n";
         else if (!isCheckedOut)
-        	message += "Item " + itemId + " is not checked out.\n";
-        else
-        {
+            message += "Item " + itemId + " is not checked out.\n";
+        else {
             try {
                 memberList.getMemberWithItem(itemId).removeItem(itemId);
-                message += lib.toString(itemId, lib);
+                message += lib.toString(itemId);
                 message += "checked in successfully\n";
 
             } catch (NullPointerException e) {
-            	message += "Error: Item " + itemId + " is marked as checked out but no member has it checked out.\n";
+                message += "Error: Item " + itemId + " is marked as checked out but no member has it checked out.\n";
             }
         }
         Storage.save(this);
         return message;
     }
-    
+
     /**
      * Adds a member to memberList with a library card number
      *
@@ -113,7 +110,7 @@ public class Controller implements Serializable {
         Member member = this.memberList.createMember(name);
         message += ("New Member: " + member.getName().trim() + " created successfully.\n" +
                 "Library card number is: " + member.getLibraryCardNum() + ".\n");
-      
+
         Storage.save(this, MemberIdServer.instance());
         return message;
     }
@@ -151,9 +148,8 @@ public class Controller implements Serializable {
             addFileDataJson(file, lib);
         else if (file.getAbsolutePath().toLowerCase().endsWith("xml"))
             addFileDataXml(file, lib);
-        else
-        {
-        	// invalid file type -- should be displayed to the screen.
+        else {
+            // invalid file type -- should be displayed to the screen.
         }
         Storage.save(this);
     }
@@ -367,19 +363,19 @@ public class Controller implements Serializable {
         String message = "";
         Library lib = getLib(library);
         if ((mask & 1) == 1) {
-        	message += lib.displayItems("Book");
+            message += lib.displayItems("Book");
         }
         if ((mask & 2) == 2) {
-        	message += lib.displayItems("CD");
+            message += lib.displayItems("CD");
         }
         if ((mask & 4) == 4) {
-        	message += lib.displayItems("DVD");
+            message += lib.displayItems("DVD");
         }
         if ((mask & 8) == 8) {
-        	message += lib.displayItems("Magazine");
+            message += lib.displayItems("Magazine");
         }
         if (message.equals("")) {
-        	message += "No items in this library.\n";
+            message += "No items in this library.\n";
         }
         return message;
     }
@@ -390,13 +386,11 @@ public class Controller implements Serializable {
      * @param cardNumber Member's library card number
      * @return String display text
      */
-    public String displayMemberCheckedOutItems(int cardNumber)
-    {
+    public String displayMemberCheckedOutItems(int cardNumber) {
         String message = "";
-        
+
         Member member = this.memberList.getMember(cardNumber);
-        if (member != null)
-        {
+        if (member != null) {
             ArrayList<String> items = member.getCheckedOutItems();
 
             Item item;
@@ -404,10 +398,10 @@ public class Controller implements Serializable {
             for (String element : items) {
                 item = main.getItem(element);
                 if (item != null) {
-                	message += "Id = " + item.getId();
-                	message += " " + item.getType() + " ";
-                	message += " Name = " + item.getName();
-                	message += " Due Date = "
+                    message += "Id = " + item.getId();
+                    message += " " + item.getType() + " ";
+                    message += " Name = " + item.getName();
+                    message += " Due Date = "
                             + (item.getDateDue().get(Calendar.MONTH) + 1)
                             + "/" + item.getDateDue().get(Calendar.DAY_OF_MONTH)
                             + "/" + item.getDateDue().get(Calendar.YEAR) + "\n";
@@ -415,8 +409,8 @@ public class Controller implements Serializable {
                 }
                 item = sister.getItem(element);
                 if (item != null) {
-                	message += "Id = " + item.getId();
-                	message += " " + item.getType() + " ";
+                    message += "Id = " + item.getId();
+                    message += " " + item.getType() + " ";
                     message += " Name = " + item.getName();
                     message += " Due Date = "
                             + (item.getDateDue().get(Calendar.MONTH) + 1)
@@ -425,7 +419,7 @@ public class Controller implements Serializable {
                 }
             }
         } else {
-        	message += ("Library card number " + cardNumber + " is invalid\n");
+            message += ("Library card number " + cardNumber + " is invalid\n");
         }
 
         return message;

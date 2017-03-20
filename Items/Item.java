@@ -17,7 +17,6 @@ public class Item implements Serializable {
     protected Calendar dateDue;     // Due date
     protected int checkOutTimeDays; // Number of days that item can be checked out
 
-
     public Item() {
     }
 
