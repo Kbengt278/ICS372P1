@@ -76,22 +76,25 @@ public class Item implements Serializable {
     public void setCheckOutTimeDays(int checkOutTimeDays) {
         this.checkOutTimeDays = checkOutTimeDays;
     }
+  
+    @Override
+    public String toString()
+    {
+      String message = "Item ID: " + getId() +
+                         " -- Type: " + getType() +
+                           " -- Name: " + getName();
+      if(dateDue != null)
+      {
+        message += " -- Due Date: " +
+                        (dateDue.get(Calendar.MONTH) + 1) +
+                         "/" + dateDue.get(Calendar.DAY_OF_MONTH) +
+                         "/" + dateDue.get(Calendar.YEAR) + "\n";
+      }
 
-	@Override
-	public String toString()
-	{
-		String message = "Item ID: " + getId() +
-    	                 " -- Type: " + getType() +
-                         " -- Name: " + getName();
-		if(dateDue != null)
-		{
-			message += " -- Due Date: " +
-                      (dateDue.get(Calendar.MONTH) + 1) +
-                       "/" + dateDue.get(Calendar.DAY_OF_MONTH) +
-                       "/" + dateDue.get(Calendar.YEAR) + "\n";
-		}
-		
-		return message;
-	}
-
+      return message;
+    }
+  
+    public enum Type {
+        BOOK, CD, DVD, MAGAZINE;
+    }
 }
