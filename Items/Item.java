@@ -1,20 +1,23 @@
 package Items;
 
+import Library.Library;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Item class is to be extended by subclasses of each type of Item.
- * It maintains protected attributes common to all types of Items.
+ * It maintains attributes common to all types of Items.
  */
 public class Item implements Serializable {
 
-    protected String id;
-    protected String name;
-    protected Type type;
-    protected boolean available;    // Available in the library -- false = checked out
-    protected Calendar dateDue;     // Due date
-    protected int checkOutTimeDays; // Number of days that item can be checked out
+    int checkOutTimeDays; // Number of days that item can be checked out
+    private String id;
+    private String name;
+    private Item.Type type;
+    private Library.Type library;
+    private boolean available;    // Available in the library -- false = checked out
+    private Calendar dateDue;     // Due date
 
     public Item() {
     }

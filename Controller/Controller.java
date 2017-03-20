@@ -180,12 +180,14 @@ public class Controller implements Serializable {
                             System.out.println("Invalid entry data: ID = " + id + " , " +
                                     "Type = " + type + "' " + "Name = " + name + "\n");
                         }
+
                     }
                     break;
                 case START_OBJECT:
                     id = null;
                     name = null;
                     type = null;
+                    optionalField = null;
                 case VALUE_FALSE:
                 case VALUE_NULL:
                 case VALUE_TRUE:

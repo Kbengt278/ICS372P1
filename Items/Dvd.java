@@ -12,7 +12,7 @@ public class Dvd extends Item {
 
     public Dvd(String id, String name, Type type) {
         super(id, name, type);
-        checkOutTimeDays = 7;
+        this.checkOutTimeDays = 7;
     }
 
     @Override

@@ -15,7 +15,8 @@
     {
       "item_name": "Cat Fancy v23",
       "item_type": "Magazine",
-      "item_id": "1a545"
+      "item_id": "1a545",
+      "item_volume": "23"
     },
     {
       "item_name": "Toy Story",
@@ -35,9 +36,10 @@
       "item_author": "Stephen King"
     },
     {
-      "item_name": "Dog Fancy v3",
+      "item_name": "Dog Fancy",
       "item_type": "Magazine",
-      "item_id": "1a546"
+      "item_id": "1a546",
+      "item_volume": "3"
     },
     {
       "item_name": "The Rose",

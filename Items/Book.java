@@ -15,7 +15,7 @@ public class Book extends Item {
     public Book(String id, String name, Type type, String author) {
         super(id, name, type);
         this.author = author;
-        checkOutTimeDays = 21;
+        this.checkOutTimeDays = 21;
     }
 
     public String getAuthor() {

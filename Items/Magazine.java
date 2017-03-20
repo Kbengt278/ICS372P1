@@ -15,13 +15,13 @@ public class Magazine extends Item {
     public Magazine(String id, String name, Type type, String volume) {
         super(id, name, type);
         this.volume = volume;
-        checkOutTimeDays = 7;
+        this.checkOutTimeDays = 7;
     }
 
     public Magazine(String id, String name, Type type) {
         super(id, name, type);
-        this.volume = "";
-        checkOutTimeDays = 7;
+        this.volume = null;
+        this.checkOutTimeDays = 7;
     }
 
     public String getVolume() {

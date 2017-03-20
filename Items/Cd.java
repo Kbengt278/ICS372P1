@@ -15,7 +15,7 @@ public class Cd extends Item {
     public Cd(String id, String name, Type type, String artist) {
         super(id, name, type);
         this.artist = artist;
-        checkOutTimeDays = 7;
+        this.checkOutTimeDays = 7;
     }
 
     public String getArtist() {

@@ -74,8 +74,7 @@ public class Library implements Serializable {
         String message = "";
         for (Item value : itemList.values()) {
             if (type.equals(value.getType())) {
-                message += value.toString()
-                        + value.toString2();
+                message += value.toString();
             }
         }
         return message;

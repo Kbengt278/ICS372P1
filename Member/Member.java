@@ -4,17 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Member Class :
- * Contains a member number (library card number) and a list of checked out items for the member
+ * Creates and maintains a library card number and a list
+ * of checked out items for the member.
  */
 public class Member implements Serializable {
 
     private String name;
     private int libraryCardNum;
+    // the items that this member has checked out
     private ArrayList<String> checkedOutItems = new ArrayList<>();
 
     public Member(int libraryCardNumber, String name) {
-    	this.libraryCardNum = libraryCardNumber;
+        this.libraryCardNum = libraryCardNumber;
         this.name = name;
     }
 
@@ -51,9 +52,9 @@ public class Member implements Serializable {
         return checkedOutItems;
     }
 
-    public boolean hasItem(String itemId){
-        for (String item : checkedOutItems){
-            if (item.equals(itemId)){
+    public boolean hasItem(String itemId) {
+        for (String item : checkedOutItems) {
+            if (item.equals(itemId)) {
                 return true;
             }
         }
