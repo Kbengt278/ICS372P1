@@ -1,7 +1,5 @@
 package Items;
 
-import Library.Library;
-
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -15,8 +13,7 @@ public class Item implements Serializable {
     private String id;
     private String name;
     private Item.Type type;
-    private Library.Type library;
-    private boolean available;    // Available in the library -- false = checked out
+    private boolean available;    // Available in the library - false = checked out
     private Calendar dateDue;     // Due date
 
     public Item() {
@@ -83,23 +80,25 @@ public class Item implements Serializable {
      */
     @Override
     public String toString() {
-        String message = "Item ID: " + this.getId() +
+        return "Item ID: " + this.getId() +
                 "\n -- Type: " + this.getType() +
                 "\n -- Name: " + this.getName();
-        return message;
+
     }
 
     /**
+     * Adds more info to the item. Called by subclasses only.
+     *
      * @return Adds the availability and due date if the item has one.
      */
-    public String toString2() {
+    String toString2() {
         String message = "";
         if (this.isAvailable())
-            message += ("\n - Available");
+            message += ("\n - Available\n");
         else
-            message += ("\n - Checked out");
+            message += ("\n - Checked out\n");
         if (this.dateDue != null) {
-            message += "\n-- Due Date: " +
+            message += "-- Due Date: " +
                     (this.dateDue.get(Calendar.MONTH) + 1) +
                     "/" + this.dateDue.get(Calendar.DAY_OF_MONTH) +
                     "/" + this.dateDue.get(Calendar.YEAR) + "\n";
@@ -108,6 +107,6 @@ public class Item implements Serializable {
     }
 
     public enum Type {
-        BOOK, CD, DVD, MAGAZINE;
+        BOOK, CD, DVD, MAGAZINE
     }
 }

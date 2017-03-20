@@ -70,7 +70,7 @@ public class Library implements Serializable {
      * @param type the type of the items to display
      * @return text to display to user
      */
-    public String displayItems(Item.Type type) {
+    public String displayItemsOfType(Item.Type type) {
         String message = "";
         for (Item value : itemList.values()) {
             if (type.equals(value.getType())) {
@@ -100,6 +100,6 @@ public class Library implements Serializable {
     }
 
     public enum Type {
-        MAIN, SISTER;
+        MAIN, SISTER
     }
 }

@@ -56,7 +56,7 @@ public class Controller implements Serializable {
             else if (!isCheckedIn)
                 message += "Item " + itemId + " is currently checked out.\n";
             else {
-                member.addItem(itemId);
+                member.addItem(lib.getItem(itemId));
                 message += "Checkout successful: \n";
                 message += lib.getItem(itemId).toString();
             }
@@ -85,10 +85,9 @@ public class Controller implements Serializable {
             message += "Item " + itemId + " is not checked out.\n";
         else {
             try {
-                memberList.getMemberWithItem(itemId).removeItem(itemId);
+                memberList.getMemberWithItem(lib.getItem(itemId)).removeItem(lib.getItem(itemId));
                 message += "Checkin successful:\n";
                 message += lib.getItem(itemId).toString();
-
             } catch (NullPointerException e) {
                 message += "Error: Item " + itemId + " is marked as checked out but no member has it checked out.\n";
             }
@@ -229,12 +228,12 @@ public class Controller implements Serializable {
      * @return false if file can't be read
      */
     private boolean addFileDataXml(File file, Library lib) {
-        String id = "";
-        String type = "";
-        String name = "";
-        String author = "";
-        String artist = "";
-        String volume = "";
+        String id = null;
+        String type = null;
+        String name = null;
+        String author = null;
+        String artist = null;
+        String volume = null;
         Document doc = null;
 
         try {
@@ -329,7 +328,7 @@ public class Controller implements Serializable {
 
         Member member = this.memberList.createMember(name);
         message += ("New Member: " + member.getName().trim() + " created successfully.\n" +
-                "Library card number is: " + member.getLibraryCardNum() + ".\n");
+                "Library card number is: " + member.getLibraryCardNumber() + ".\n");
 
         Storage.save(this, MemberIdServer.instance());
         return message;
@@ -346,16 +345,16 @@ public class Controller implements Serializable {
         String message = "";
         Library lib = getLib(library);
         if ((mask & 1) == 1) {
-            message += lib.displayItems(Item.Type.BOOK);
+            message += lib.displayItemsOfType(Item.Type.BOOK);
         }
         if ((mask & 2) == 2) {
-            message += lib.displayItems(Item.Type.CD);
+            message += lib.displayItemsOfType(Item.Type.CD);
         }
         if ((mask & 4) == 4) {
-            message += lib.displayItems(Item.Type.DVD);
+            message += lib.displayItemsOfType(Item.Type.DVD);
         }
         if ((mask & 8) == 8) {
-            message += lib.displayItems(Item.Type.MAGAZINE);
+            message += lib.displayItemsOfType(Item.Type.MAGAZINE);
         }
         if (message.equals("")) {
             message += "No items in this library.\n";
@@ -374,21 +373,12 @@ public class Controller implements Serializable {
 
         Member member = this.memberList.getMember(cardNumber);
         if (member != null) {
-            ArrayList<String> items = member.getCheckedOutItems();
+            ArrayList<Item> items = member.getCheckedOutItems();
 
-            Item item;
             message += ("Items checked out by " + member.getName() + " - Member #: " + cardNumber + "\n");
             message += "------------------------------------------------------------------------------------------------------------\n";
-            for (String element : items) {
-                item = main.getItem(element);
-                if (item != null) {
-                    message += item.toString();
-                    continue;
-                }
-
-                item = sister.getItem(element);
-                if (item != null)
-                    message += item.toString();
+            for (Item item : items) {
+                message += item.toString();
             }
         } else
             message += ("Library card number " + cardNumber + " is invalid\n");
@@ -401,7 +391,7 @@ public class Controller implements Serializable {
      * @param library library type
      * @return the library object
      */
-    public Library getLib(Library.Type library) {
+    Library getLib(Library.Type library) {
         switch (library) {
             case MAIN:
                 return main;
@@ -413,7 +403,7 @@ public class Controller implements Serializable {
     }
 
     // for testing
-    public void addItemToLibrary(Item addThisItem, Library.Type library) {
+    void addItemToLibrary(Item addThisItem, Library.Type library) {
         getLib(library).addItem(addThisItem);
     }
 }
