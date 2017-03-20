@@ -1,8 +1,7 @@
 package Library;
 
 
-import Items.*;
-import Member.Member;
+import Items.Item;
 import java.util.Calendar;
 import java.io.*;
 import java.util.HashMap;
@@ -66,12 +65,12 @@ public class Library implements Serializable {
      * @param type The type of items to display (e.g book, cd, dvd)
      * @return String display text
      */
-    public String displayItems(String type) {
+    public String displayItems(Item.Type type) {
         String ret = "";
         for (Item value : list.values()) {
-            if (type.equalsIgnoreCase(value.getType())) {
+            if (type.equals(value.getType())) {
                 ret += ("Id = " + value.getId());
-                ret += (" " + value.getType() + " ");
+                ret += (" " + value.getType().name() + " ");
                 ret += (" Name = " + value.getName());
                 if (value.isAvailable())
                     ret += (" - Available\n");
@@ -117,5 +116,9 @@ public class Library implements Serializable {
         return ("Item " + itemId + " "
                 + item.getType() + " : "
                 + item.getName() + "\n");
+    }
+
+    public enum Type{
+        MAIN, SISTER;
     }
 }
