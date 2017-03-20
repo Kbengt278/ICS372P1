@@ -75,18 +75,32 @@ public class Item implements Serializable {
         this.checkOutTimeDays = checkOutTimeDays;
     }
 
+    /**
+     * @return Makes a string of the attributes of the item.
+     */
     @Override
     public String toString() {
-        String message = "Item ID: " + getId() +
-                " -- Type: " + getType() +
-                " -- Name: " + getName();
-        if (dateDue != null) {
-            message += " -- Due Date: " +
-                    (dateDue.get(Calendar.MONTH) + 1) +
-                    "/" + dateDue.get(Calendar.DAY_OF_MONTH) +
-                    "/" + dateDue.get(Calendar.YEAR) + "\n";
-        }
+        String message = "Item ID: " + this.getId() +
+                "\n -- Type: " + this.getType() +
+                "\n -- Name: " + this.getName();
+        return message;
+    }
 
+    /**
+     * @return Adds the availability and due date if the item has one.
+     */
+    public String toString2() {
+        String message = "";
+        if (this.isAvailable())
+            message += ("\n - Available");
+        else
+            message += ("\n - Checked out");
+        if (this.dateDue != null) {
+            message += "\n-- Due Date: " +
+                    (this.dateDue.get(Calendar.MONTH) + 1) +
+                    "/" + this.dateDue.get(Calendar.DAY_OF_MONTH) +
+                    "/" + this.dateDue.get(Calendar.YEAR) + "\n";
+        }
         return message;
     }
 

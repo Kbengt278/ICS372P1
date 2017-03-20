@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Controller Class :
- * Creates Library objects and MemberList object. Handles checkIn, checkOut,
- * displayLibraryItems, addFileData, and displayMemberCheckedOutItems functionality
- * between the UI and the appropriate objects
+ * Creates and maintains the Library objects and MemberList object.
+ * Handles checkIn, checkOut, displayLibraryItems,
+ * addFileData, and displayMemberCheckedOutItems functionality
+ * between the UI and the appropriate objects.
  */
 
 public class Controller implements Serializable {
@@ -58,7 +58,7 @@ public class Controller implements Serializable {
             else {
                 member.addItem(itemId);
                 message += "Checkout successful: \n";
-                message += lib.toString(itemId);
+                message += lib.getItem(itemId).toString();
             }
         } else
             message += "Library card number " + cardNumber + " is invalid\n";
@@ -86,8 +86,8 @@ public class Controller implements Serializable {
         else {
             try {
                 memberList.getMemberWithItem(itemId).removeItem(itemId);
-                message += lib.toString(itemId);
-                message += " checked in successfully\n";
+                message += "Checkin successful:\n";
+                message += lib.getItem(itemId).toString();
 
             } catch (NullPointerException e) {
                 message += "Error: Item " + itemId + " is marked as checked out but no member has it checked out.\n";
@@ -121,7 +121,7 @@ public class Controller implements Serializable {
      *
      * @param file file to read data from.
      * @param lib  library where the item is
-     * @return False if file can't be read.
+     * @return false if file can't be read
      */
     private boolean addFileDataJson(File file, Library lib) {
         String id = "";

@@ -1,7 +1,8 @@
 package Items;
 
 /**
- * Class for Magazine type Items
+ * Magazine type Items
+ * has an optional field: volume
  */
 public class Magazine extends Item {
 
@@ -21,5 +22,22 @@ public class Magazine extends Item {
         super(id, name, type);
         this.volume = "";
         checkOutTimeDays = 7;
+    }
+
+    public String getVolume() {
+        return volume;
+    }
+
+    public void setVolume(String volume) {
+        this.volume = volume;
+    }
+
+    @Override
+    public String toString() {
+        String message = super.toString();
+        if (volume != null)
+            message += "\n -- Volume: " + volume;
+        message += toString2();
+        return message;
     }
 }

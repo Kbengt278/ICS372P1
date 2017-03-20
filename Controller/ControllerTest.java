@@ -117,7 +117,7 @@ public class ControllerTest {
 
         // test success
         response = testController.checkIn("itemCheckedOutBy1", Library.Type.MAIN);
-        assertTrue(response.contains("checked in successfully"));
+        assertTrue(response.contains("Checkin successful"));
     }
 
     @Test
