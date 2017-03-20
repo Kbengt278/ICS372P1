@@ -37,15 +37,12 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Adds item to member's checkedOut list
-     * Sets item's available flag false
-     * Sets item's DateDue to appropriate due date
-     * Sets checkedOutBy to cardNumber
+     * Checks out the item to the UI set library by given cardNumber.
      *
-     * @param cardNumber Member's id number
-     * @param itemId     ID of item to check out
-     * @param library    Library to check item out of
-     * @return String    display text
+     * @param cardNumber member's cardNumber who will check out the item
+     * @param itemId     id of the item to check out
+     * @param library    library type of where the item is
+     * @return text to display to user
      */
     public String checkOut(int cardNumber, String itemId, Library.Type library) {
         String message = "";
@@ -71,13 +68,11 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Removes item from member's checkedOut list
-     * Sets item's available flag true
-     * Clears items checkedOutBy field
+     * Checks in the item to the UI set library.
      *
-     * @param itemId  ID of item to check out
-     * @param library Library to check item into
-     * @return String    display text
+     * @param itemId  id of the item to check in
+     * @param library library type of where the item is
+     * @return text to display to user
      */
     public String checkIn(String itemId, Library.Type library) {
         String message = "";
@@ -103,10 +98,10 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Adds items from input file to appropriate library
+     * Adds items from input file to appropriate library.
      *
-     * @param file    File to read data from
-     * @param library 1 = main, 2 = sister
+     * @param file    file to read data from
+     * @param library library type of where the item is
      */
     public void addFileData(File file, Library.Type library) {
         Library lib = getLib(library);
@@ -121,11 +116,12 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Reads a JSON file and adds items to current library.
+     * Reads a JSON file and adds items to UI set library.
      * Detects bad file entries and reports them.
      *
-     * @param file File to read data from.
-     * @return boolean False if file can't be read.
+     * @param file file to read data from.
+     * @param lib  library where the item is
+     * @return False if file can't be read.
      */
     private boolean addFileDataJson(File file, Library lib) {
         String id = "";
@@ -223,11 +219,12 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Reads a XML file and adds items to current library
-     * Detects bad file entries and reports them
+     * Reads a XML file and adds items to UI set library.
+     * Detects bad file entries and reports them.
      *
-     * @param file File to read data from
-     * @return boolean False if file can't be read
+     * @param file file to read data from
+     * @param lib  library where the item is
+     * @return false if file can't be read
      */
     private boolean addFileDataXml(File file, Library lib) {
         String id = "";
@@ -320,10 +317,10 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Adds a member to memberList with a library card number
+     * Adds a member to memberList with a generated library card number.
      *
-     * @param name Name of new member
-     * @return String display text
+     * @param name name of new member
+     * @return text to display to user
      */
     public String addMember(String name) {
         String message = "";
@@ -337,11 +334,11 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Displays items in library catalog by type
+     * Displays items in library catalog by type.
      *
-     * @param library 1 = main, 2 = sister
-     * @param mask    Mask of types to display 1 = book, 2 = cd, 4 = dvd, 8 = magazine
-     * @return String display text
+     * @param mask    mask of types to display: 1 = book, 2 = cd, 4 = dvd, 8 = magazine
+     * @param library library where the item is
+     * @return text to display to user
      */
     public String displayLibraryItems(int mask, Library.Type library) {
         String message = "";
@@ -365,10 +362,10 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Gets the checked out items for this member
+     * Gets the checked out items for this member.
      *
-     * @param cardNumber Member's library card number
-     * @return String display text
+     * @param cardNumber member's cardNumber whose items will be displayed
+     * @return text to display to user
      */
     public String displayMemberCheckedOutItems(int cardNumber) {
         String message = "";
@@ -397,10 +394,10 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Returns the library object designated by library
+     * Returns the library object designated by the library type.
      *
-     * @param library library number
-     * @return Library object
+     * @param library library type
+     * @return the library object
      */
     public Library getLib(Library.Type library) {
         switch (library) {
@@ -413,6 +410,7 @@ public class Controller implements Serializable {
         }
     }
 
+    // for testing
     public void addItemToLibrary(Item addThisItem, Library.Type library) {
         getLib(library).addItem(addThisItem);
     }
