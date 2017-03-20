@@ -39,7 +39,6 @@ public class Library implements Serializable {
             return true;
         }
     }
-    
     /**
      * checkIn method -- sets items available flag true, clears items checkeOutBy field
      * @param itemId - item ID to be checked in
@@ -94,12 +93,16 @@ public class Library implements Serializable {
         list.put(item.getId(), item);
     }
 
-    //
-    // Returns due date of item
-    //
-    public Calendar getDueDate(String itemId, Library library) {
-        Library lib = library;
-        Item item = lib.getItem(itemId);
+
+    /**
+     * Returns the due date of the item.
+     * 
+     * @param itemId
+     * @param library
+     * @return due date
+     */
+    public Calendar getDueDate(String itemId) {
+        Item item = getItem(itemId);
         return item.getDateDue();
     }
     
@@ -110,12 +113,11 @@ public class Library implements Serializable {
     public int size() {
     	return list.size();
     }
-    
-    public String toString(String itemId) {
-        Item item = this.getItem(itemId);
-        return ("Item " + itemId + " "
-                + item.getType() + " : "
-                + item.getName() + "\n");
+
+    public String toString(String itemId)
+    {
+        Item item = getItem(itemId);
+        return item.toString();
     }
 
     public enum Type{
