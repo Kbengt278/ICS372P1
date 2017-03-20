@@ -21,38 +21,24 @@ public class Library implements Serializable {
 
     /**
      * checkOut method -- sets items available flag false, sets checkedOutBy to cardNumber,
-     * sets items DateDue to approprate due date
+     * sets items DateDue to appropriate due date
      * 
      * @param itemId - item ID to be checked out
-     * @param member
      * @return message to user
      */
-    public String checkOut(String itemId, Member member)
-    {
-    	String message = "";
-        Item item = list.get(itemId);
-
-        if (item == null)
-        	message += ("Item " + itemId + " does not exist\n");
-        else if (!item.isAvailable())
-        	message += ("Item " + itemId + " is already checked out.\n");
-        else
-        {
-            member.addItem(itemId);
+    public Boolean checkOut(String itemId) {
+        Item item = this.getItem(itemId);
+        if (item == null) {
+            return null;
+        } else if (!item.isAvailable()) {
+            return false;
+        } else {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DAY_OF_YEAR, item.getCheckOutTimeDays());
             item.setAvailable(false);
             item.setDateDue(cal);
-
-            message += ("Item " + itemId + " "
-                    + item.getType() + " : "
-                    + item.getName() + "\n"
-                    + "checked out successfully. Due date is "
-                    + (item.getDateDue().get(Calendar.MONTH) + 1)
-                    + "/" + item.getDateDue().get(Calendar.DAY_OF_MONTH)
-                    + "/" + item.getDateDue().get(Calendar.YEAR) + ".\n");
+            return true;
         }
-        return message;
     }
     
     /**

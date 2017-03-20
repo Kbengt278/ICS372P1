@@ -40,7 +40,7 @@ public class LibraryUI extends Application {
 
     @Override // Override the start method in the Controller class
     public void start(Stage primaryStage) throws IOException {
-        app = storage.Storage.loadController(); // Load data from file
+        app = Storage.Storage.loadController(); // Load data from file
 
         // Create a border pane
         VBox pane = new VBox();
