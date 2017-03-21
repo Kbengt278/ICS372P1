@@ -81,9 +81,7 @@ public class Item implements Serializable {
     @Override
     public String toString() {
         return "Item ID: " + this.getId() +
-                "\n -- Type: " + this.getType() +
-                "\n -- Name: " + this.getName();
-
+                " Title: " + this.getName();
     }
 
     /**
@@ -94,15 +92,9 @@ public class Item implements Serializable {
     String toString2() {
         String message = "";
         if (this.isAvailable())
-            message += ("\n - Available\n");
+            message += (" -- Available");
         else
-            message += ("\n - Checked out\n");
-        if (this.dateDue != null) {
-            message += "-- Due Date: " +
-                    (this.dateDue.get(Calendar.MONTH) + 1) +
-                    "/" + this.dateDue.get(Calendar.DAY_OF_MONTH) +
-                    "/" + this.dateDue.get(Calendar.YEAR) + "\n";
-        }
+            message += (" -- Unavailable");
         return message;
     }
 
