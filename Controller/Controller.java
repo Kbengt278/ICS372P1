@@ -129,7 +129,7 @@ public class Controller implements Serializable {
         String optionalField = "";
         String textLine = "";
         String keyName = "";
-        String value;
+        String value = "";
         boolean startArray = false;
 
         Scanner input = null;
@@ -174,12 +174,15 @@ public class Controller implements Serializable {
                                 case "dvd":
                                     lib.addItem(new Dvd(id, name, Item.Type.DVD));
                                     break;
+                                default:
+                                    System.out.println("\nInvalid type in entry: ID = " + id + " , " +
+                                            "Type = " + type + ", " + "Name = " + name);
+                                    break;
                             }
                         } else {
-                            System.out.println("\nInvalid entry data: ID = " + id + " , " +
-                                    "Type = " + type + "' " + "Name = " + name);
+                            System.out.println("\nMissing data in entry: ID = " + id + " , " +
+                                    "Type = " + type + ", " + "Name = " + name);
                         }
-
                     }
                     break;
                 case START_OBJECT:
@@ -346,28 +349,26 @@ public class Controller implements Serializable {
         Library lib = getLib(library);
         if (mask == 0) {
             message += "\n\n***** No Item Type Selected *****";
-        }
-        else
-        {
-        	message += ("Items in Library " + lib.getLibraryType());
+        } else {
+            message += ("Items in Library " + lib.getLibraryType());
             message += "\n---------------------------------------------------------------------------------------------------------";
-	        if ((mask & 1) == 1) {
-	            message += "\n\nBooks\n----------";
-	            message += lib.displayItemsOfType(Item.Type.BOOK);
-	        }
-	        if ((mask & 2) == 2) {
+            if ((mask & 1) == 1) {
+                message += "\n\nBooks\n----------";
+                message += lib.displayItemsOfType(Item.Type.BOOK);
+            }
+            if ((mask & 2) == 2) {
                 message += "\n\nCDs\n----------";
-	            message += lib.displayItemsOfType(Item.Type.CD);
-	        }
-	        if ((mask & 4) == 4) {
+                message += lib.displayItemsOfType(Item.Type.CD);
+            }
+            if ((mask & 4) == 4) {
                 message += "\n\nDVDs\n----------";
-	            message += lib.displayItemsOfType(Item.Type.DVD);
-	        }
-	        if ((mask & 8) == 8) {
+                message += lib.displayItemsOfType(Item.Type.DVD);
+            }
+            if ((mask & 8) == 8) {
                 message += "\n\nMagazines\n----------";
-	            message += lib.displayItemsOfType(Item.Type.MAGAZINE);
-	        }
-	        message += "\n---------------------------------------------------------------------------------------------------------";
+                message += lib.displayItemsOfType(Item.Type.MAGAZINE);
+            }
+            message += "\n---------------------------------------------------------------------------------------------------------";
         }
         return message;
     }
