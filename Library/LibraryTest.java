@@ -13,7 +13,6 @@ public class LibraryTest {
 
     private Item itemAvailable;
     private Item itemCheckedOut;
-    private Item itemNotAvailableAndNotCheckedOut;
     private Item itemBook;
     private Item itemMagazine;
     private Item itemCd;

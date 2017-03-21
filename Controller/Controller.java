@@ -109,7 +109,7 @@ public class Controller implements Serializable {
         else if (file.getAbsolutePath().toLowerCase().endsWith("xml"))
             addFileDataXml(file, lib);
         else {
-            // invalid file type -- should be displayed to the screen.
+            System.out.println("Error: Invalid file type entered.");
         }
         Storage.save(this);
     }
