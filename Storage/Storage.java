@@ -104,7 +104,7 @@ public class Storage {
         // If the Controller object couldn't be saved to the controllerFile, warn the user no changes were saved.
         catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null,
-                    "Could not save changes. Please try again.");
+                    "Could not save changesto the controller file. Please try again.");
             return false;
         }
         // This means there was an error writing to or closing the Controller file. Warn the user the changes may not have saved.
@@ -155,7 +155,7 @@ public class Storage {
         // If the Controller object couldn't be saved to the controllerFile, warn the user no changes were saved.
         catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null,
-                    "Could not save changes. Please try again.");
+                    "Could not save changesto the controller file. Please try again.");
             return false;
         }
         // This means there was an error writing to or closing the Controller file. Warn the user the changes may not have saved.
