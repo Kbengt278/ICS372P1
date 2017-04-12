@@ -4,5 +4,3 @@ ControllerData.bin
 MemberServerData.bin
 output/
 META-INF/
-javax.json-1.0.4.jar
-javax.json-api-1.0.jar
