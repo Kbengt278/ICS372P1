@@ -1,6 +1,6 @@
-package Member;
+package cheetahs.member;
 
-import Items.Item;
+import cheetahs.items.Item;
 
 import java.io.Serializable;
 import java.util.ArrayList;

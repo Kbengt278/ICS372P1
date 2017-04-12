@@ -1,8 +1,6 @@
-package Member;
+package cheetahs.member;
 
-import Items.Item;
-import Member.Member;
-import Member.MemberIdServer;
+import cheetahs.items.Item;
 
 import java.io.Serializable;
 import java.util.HashMap;

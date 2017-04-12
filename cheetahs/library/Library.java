@@ -1,8 +1,7 @@
-package Library;
+package cheetahs.library;
 
 
-import Items.Item;
-import Items.Item.Status;
+import cheetahs.items.Item;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -19,8 +18,8 @@ public class Library implements Serializable {
     private HashMap<String, Item> itemList = new HashMap<>();
     private Type libraryType = null;
 
-	public Library(Type type) {
-    	this.libraryType = type;
+    public Library(Type type) {
+        this.libraryType = type;
     }
 
     /**
@@ -62,7 +61,7 @@ public class Library implements Serializable {
         } else if (item.isAvailable()) {
             return false;
         } else {
-            item.setStatus(Status.SHELVING);
+            item.setStatus(Item.Status.SHELVING);
             item.setDateDue(null);
             return true;
         }
@@ -81,14 +80,14 @@ public class Library implements Serializable {
         if (item == null) {
             return false;
         } else {
-            if (status == Status.CHECK_STATUS)
+            if (status == Item.Status.CHECK_STATUS)
                 return true;
             item.setStatus(status);
-            if (status == Status.CHECKED_IN){
+            if (status == Item.Status.CHECKED_IN) {
                 item.setAvailable(true);
             }
-            if (status == Status.MISSING || status == Status.REFERENCE_ONLY || status == Status.REMOVED_FROM_CIRCULATION
-                    || status == Status.SHELVING) {
+            if (status == Item.Status.MISSING || status == Item.Status.REFERENCE_ONLY || status == Item.Status.REMOVED_FROM_CIRCULATION
+                    || status == Item.Status.SHELVING) {
                 item.setAvailable(false);
             }
 
@@ -121,15 +120,16 @@ public class Library implements Serializable {
     public Item getItem(String id) {
         return itemList.get(id);
     }
-    
+
     /**
      * Gets library type (main or sister)
+     *
      * @return Main or Sister
      */
     public Type getLibraryType() {
-		return libraryType;
-	}
-    
+        return libraryType;
+    }
+
     /**
      * Adds item to the list of items in this library.
      *

@@ -1,4 +1,4 @@
-package Items;
+package cheetahs.items;
 
 /**
  * DVD type Items

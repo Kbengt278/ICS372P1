@@ -1,0 +1,6 @@
+*.class
+.idea/
+ControllerData.bin
+MemberServerData.bin
+output/
+META-INF/

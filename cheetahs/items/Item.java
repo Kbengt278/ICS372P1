@@ -1,4 +1,4 @@
-package Items;
+package cheetahs.items;
 
 import java.io.Serializable;
 import java.util.Calendar;
