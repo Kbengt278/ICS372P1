@@ -54,11 +54,11 @@ public class Controller implements Serializable {
             if (isCheckedIn == null)
                 message += "\n\n***** Item " + itemId + " does not exist *****";
             else if (!isCheckedIn)
-                message += "\n\n***** Item " + itemId + " is currently checked out. *****";
+                message += "\n\n***** Item " + itemId + " is currently not available for checkout. *****";
             else {
                 member.addItem(lib.getItem(itemId));
-                message += "\n\n***** Checkout Successful *****";
-                message += lib.getItem(itemId).toString();
+                message += "\n\n***** Checkout Successful *****\n";
+                message += lib.getItem(itemId).toString() + " Status : " + lib.getItem(itemId).getStatus();
             }
         } else
             message += "\n\n***** Library card number " + cardNumber + " is invalid *****";
@@ -86,11 +86,32 @@ public class Controller implements Serializable {
         else {
             try {
                 memberList.getMemberWithItem(lib.getItem(itemId)).removeItem(lib.getItem(itemId));
-                message += "\n\n***** Checkin Successful *****";
-                message += lib.getItem(itemId).toString();
+                message += "\n\n***** Checkin Successful *****\n";
+                message += lib.getItem(itemId).toString() + " Status : " + lib.getItem(itemId).getStatus();
             } catch (NullPointerException e) {
                 message += "\n\n***** Error: Item " + itemId + " is marked as checked out but no member has it checked out. *****";
             }
+        }
+        Storage.save(this);
+        return message;
+    }
+
+    /**
+     * Checks in the item to the UI set library.
+     *
+     * @param itemId  id of the item to check in
+     * @param library library type of where the item is
+     * @return text to display to user
+     */
+    public String changeItemStatus(String itemId, Item.Status status, Library.Type library) {
+        String message = "";
+        Library lib = getLib(library);
+
+        if (!lib.changeStatus(itemId, status))
+            message += "\n\n***** Item " + itemId + " does not exist *****";
+        else {
+            message += "\n\n***** Status change Successful *****\n";
+            message += lib.getItem(itemId).toString() + " Status : " + lib.getItem(itemId).getStatus();
         }
         Storage.save(this);
         return message;
@@ -123,26 +144,34 @@ public class Controller implements Serializable {
      * @return false if file can't be read
      */
     boolean addFileDataJson(File file, Library lib) {
+        // id will hold the Item id from the parsed file
         String id = "";
+        // type will hold the Item subtype: book, cd, dvd, or magazine
         String type = "";
+        // name holds the title of the object, e.g. book name, album title, magazine title
         String name = "";
+        // optionField holds an optional volume value that might be provided with books, magazines, and CDs
         String optionalField = "";
+        // textLine holds all of the JSON after it iterates through the file.
         String textLine = "";
+        // keyName holds the key name of one key-value pair while parsing the JSON file.
         String keyName = "";
+        // value holds the value of one key-value pair while parsing the JSON file.
         String value = "";
+        // startArray flags true when we start iterating through the JSON file (checking START_ARRAY);
+        // goes through and parses the objects out of the file while still true, and then
+        // it flags back to false once we are done going through and the JSONParser event is END_ARRAY.
         boolean startArray = false;
 
         Scanner input = null;
         try {
             input = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            System.out.println("Couldn't find file");
-            return false;
-        }
-        try {
             while (input.hasNext()) {
                 textLine = textLine + input.nextLine() + "\n";
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Couldn't find file");
+            return false;
         } catch (NullPointerException e) {
             System.out.println("Couldn't find file");
         }
@@ -160,6 +189,7 @@ public class Controller implements Serializable {
                     break;
                 case END_OBJECT:
                     if (startArray) {
+                        // Checks that we are not missing any id, name, and type values for the object
                         if (id != null && name != null && type != null && !id.equals("") && !name.equals("") && !type.equals("")) {
                             switch (type.toLowerCase()) {
                                 case "cd":
@@ -185,6 +215,7 @@ public class Controller implements Serializable {
                         }
                     }
                     break;
+                // Clear the values to empty when parsing a new object
                 case START_OBJECT:
                     id = "";
                     name = "";
@@ -231,22 +262,38 @@ public class Controller implements Serializable {
      * @return false if file can't be read
      */
     boolean addFileDataXml(File file, Library lib) {
+        // id will hold the Item id of a DOM object from the parsed file
         String id = "";
+        // type will hold the Item subtype: book, cd, dvd, or magazine
         String type = "";
+        // name holds the title of the object, e.g. book name, album title, magazine title
         String name = "";
+        // author holds the author value for books
         String author = "";
+        // artist holds the artist value for CDs
         String artist = "";
+        // volume holds the volume # for magazine
         String volume = "";
+        // doc is the instantiation of the object for the XML file
         Document doc = null;
 
         try {
+            // dbFactory is an abstract class, using a factory API
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            // dBuilder created using the DocumentBuilderFactor instance
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            // parses the XML file using the DocumentBuilder and returns a DOM Document object
             doc = dBuilder.parse(file);
+            // getDocumentElement directly accesses the child node of the document element, and normalize
+            // makes it so the text of a given node is combined and only separated by the actual structure
+            // of the text nodes. It eliminates any empty text that's part of the node, and combines
+            // the multiple lines of it.
             doc.getDocumentElement().normalize();
 
             NodeList nList = doc.getElementsByTagName("Item");
 
+            // Iterate through the list of nodes pulled from the DOM Document object. Add valid items to the library,
+            // and print out a warning when the nodes are missing mandatory information.
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -258,9 +305,17 @@ public class Controller implements Serializable {
                     artist = "";
                     volume = "";
 
-                    id = eElement.getAttribute("id");
-                    type = eElement.getAttribute("type");
-                    name = eElement.getElementsByTagName("Name").item(0).getTextContent();
+                    try {
+                        id = eElement.getAttribute("id");
+                        type = eElement.getAttribute("type");
+                        name = eElement.getElementsByTagName("Name").item(0).getTextContent();
+                    }
+                    // If one of the mandatory attributes is null, don't add it. 
+                    catch (NullPointerException e) {
+                        System.out.println("\nEntry missing an ID, type, and/or name: ID = " + id + " , " +
+                                "Type = " + type + ", " + "Name = " + name);
+                        continue;
+                    }
                     // author field is optional
                     if (type.toLowerCase().equals("book"))
                         author = eElement.getElementsByTagName("Author").item(0).getTextContent();
