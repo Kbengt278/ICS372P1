@@ -3,7 +3,6 @@ package Storage;
 import Controller.Controller;
 import Member.MemberIdServer;
 
-import javax.swing.*;
 import java.io.*;
 
 /**
@@ -38,25 +37,24 @@ public class Storage {
             }
             // If the controller file is not found, notify the user that it did not load.
             catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null,
-                        "Controller file not found.");
+                System.out.println("Controller file not found.");
             }
             // If there is an IO Exception other than the file isn't found, notify the user and prompt them to restart the application.
             catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "Error loading controller file. Restart the application" +
+                System.out.println("Error loading controller file. Restart the application" +
                         " to try loading the file again.");
             }
             // If there is a ClassNotFoundException, there's something wrong with how the app loaded since it's probably missing a jar or
             // one of the other class files.
             catch (ClassNotFoundException e) {
-                JOptionPane.showMessageDialog(null, "Error starting the library application. Restart the application" +
+                System.out.println("Error starting the library application. Restart the application" +
                         " to try loading the file again.");
             }
         } else {
             try {
                 checkFileExists.createNewFile();
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "Error creating controller file. Restart the application" +
+                System.out.println("Error creating controller file. Restart the application" +
                         " to try creating the file again.");
             }
         }
@@ -77,13 +75,11 @@ public class Storage {
         // If the member file is not found, notify the user that it did not load.
         // This means any saved information was not loaded, so information used could be inaccurate.
         catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not find the member file. Restart the application.");
+            System.out.println("Could not find the member file. Restart the application.");
         }         // If the member did not load for another reason, notify the user that it did not load.
         // This means any saved information was not loaded, so information used could be inaccurate.
         catch (IOException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not load the list of library members. Restart the application.");
+            System.out.println("Could not load the list of library members. Restart the application.");
         }
         return server;
     }
@@ -105,14 +101,12 @@ public class Storage {
         }
         // If the Controller object couldn't be saved to the controllerFile, warn the user no changes were saved.
         catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not save changesto the controller file. Please try again.");
+            System.out.println("Could not save changes to the controller file. Please try again.");
             return false;
         }
         // This means there was an error writing to or closing the Controller file. Warn the user the changes may not have saved.
         catch (IOException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not save changes to the controller file. Please retry.");
+            System.out.println("Could not save changes to the controller file. Please retry.");
             return false;
         }
 
@@ -126,14 +120,12 @@ public class Storage {
         }
         // If the MemberIdServer object couldn't be saved to the memberServerFile, warn the user no changes were saved.
         catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not find or access the member file. Please retry.");
+            System.out.println("Could not find or access the member file. Please retry.");
             return false;
         }
         // This means there was an error writing to or closing the MemberIdServer file. Warn the user the changes may not have saved.
         catch (IOException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not save changes to the member file. Please retry.");
+            System.out.println("Could not save changes to the member file. Please retry.");
             return false;
         }
         return true;
@@ -156,14 +148,12 @@ public class Storage {
         }
         // If the Controller object couldn't be saved to the controllerFile, warn the user no changes were saved.
         catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not save changesto the controller file. Please try again.");
+            System.out.println("Could not save changesto the controller file. Please try again.");
             return false;
         }
         // This means there was an error writing to or closing the Controller file. Warn the user the changes may not have saved.
         catch (IOException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not save changes to the controller file. Please retry.");
+            System.out.println("Could not save changes to the controller file. Please retry.");
             return false;
         }
         return true;

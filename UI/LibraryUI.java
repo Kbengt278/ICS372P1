@@ -249,7 +249,7 @@ public class LibraryUI extends Application {
                 } else if (rbCheckedIn.isSelected()) {
                     text.appendText(app.changeItemStatus(itemId2.getText().trim(), Status.CHECKED_IN, library));
                 } else {
-                    text.appendText("No action taken, there was no status button selected");
+                    text.appendText("\nNo action taken, there was no status button selected");
                 }
 //                System.out.println(itemId.getText().trim());
 //                System.out.println(Status.CHECKED_IN.toString());

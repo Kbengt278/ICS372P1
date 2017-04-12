@@ -29,12 +29,9 @@ public class MemberIdServer implements Serializable {
         try {
             server = (MemberIdServer) in.readObject();
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not save changes to the member file. Please try again.");
+            System.out.println("Could not save changes to the member file. Please try again.");
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not load the list of library members. Restart the application.");
-
+            System.out.println("Could not load the list of library members. Restart the application.");
         }
     }
 
