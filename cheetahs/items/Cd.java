@@ -1,4 +1,4 @@
-package Items;
+package cheetahs.items;
 
 /**
  * CD type Items.

@@ -1,11 +1,11 @@
-package Controller;
+package cheetahs.controller;
 
-import Items.*;
-import Library.Library;
-import Member.Member;
-import Member.MemberIdServer;
-import Member.MemberList;
-import Storage.Storage;
+import cheetahs.items.*;
+import cheetahs.library.Library;
+import cheetahs.member.Member;
+import cheetahs.member.MemberIdServer;
+import cheetahs.member.MemberList;
+import cheetahs.storage.Storage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -25,7 +25,7 @@ import java.util.Scanner;
  * Creates and maintains the Library objects and MemberList object.
  * Handles checkIn, checkOut, displayLibraryItems,
  * addFileData, and displayMemberCheckedOutItems functionality
- * between the UI and the appropriate objects.
+ * between the com.ui and the appropriate objects.
  */
 
 public class Controller implements Serializable {
@@ -37,7 +37,7 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Checks out the item to the UI set library by given cardNumber.
+     * Checks out the item to the com.ui set library by given cardNumber.
      *
      * @param cardNumber member's cardNumber who will check out the item
      * @param itemId     id of the item to check out
@@ -68,7 +68,7 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Checks in the item to the UI set library.
+     * Checks in the item to the com.ui set library.
      *
      * @param itemId  id of the item to check in
      * @param library library type of where the item is
@@ -97,7 +97,7 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Checks in the item to the UI set library.
+     * Checks in the item to the com.ui set library.
      *
      * @param itemId  id of the item to check in
      * @param library library type of where the item is
@@ -136,7 +136,7 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Reads a JSON file and adds items to UI set library.
+     * Reads a JSON file and adds items to com.ui set library.
      * Detects bad file entries and reports them.
      *
      * @param file file to read data from.
@@ -254,7 +254,7 @@ public class Controller implements Serializable {
     }
 
     /**
-     * Reads a XML file and adds items to UI set library.
+     * Reads a XML file and adds items to com.ui set library.
      * Detects bad file entries and reports them.
      *
      * @param file file to read data from

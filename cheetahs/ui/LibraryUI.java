@@ -1,8 +1,9 @@
-package UI;
+package cheetahs.ui;
 
-import Controller.Controller;
-import Items.Item;
-import Items.Item.Status;
+import cheetahs.controller.Controller;
+import cheetahs.items.Item;
+import cheetahs.library.Library;
+import cheetahs.storage.Storage;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,19 +17,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * This program will take a .JSON or .xml file of items in a Library, and create a collection
  * of the items. Then it will allow items to be checked out and checked back in.
  * The 4 types of items are : CD, DVD, book, and magazine.
  */
-
 public class LibraryUI extends Application {
 
     // itemID is the unique string identifier (digits and letters) for a library item,
@@ -46,20 +45,20 @@ public class LibraryUI extends Application {
     // fileChooser is used to pick the XML and JSON files sent from the sister library and add them
     // to the application data.
     private final FileChooser fileChooser = new FileChooser();
+    private Stage changeItemStatusStage = new Stage();
     // Specifies that this application is the main Library using Type
-    private Library.Library.Type library = Library.Library.Type.MAIN;
+    private Library.Type library = Library.Type.MAIN;
     // Instantiation of the Controller object that will load any serialized Controller data, and then be used
     // in the execution of the application.
     private Controller app = new Controller();
-    Stage changeItemStatusStage = new Stage();
 
     public static void main(String[] args) {
         Application.launch(args);
     }
 
     @Override // Override the start method in the Controller class
-    public void start(Stage primaryStage) throws IOException {
-        app = Storage.Storage.loadController(); // Load data from file
+    public void start(final Stage primaryStage) throws IOException {
+        app = Storage.loadController(); // Load data from file
 
         // Create a border pane
         VBox pane = new VBox();
@@ -71,7 +70,7 @@ public class LibraryUI extends Application {
 
         // Create the radio buttons for the Libraries
         final ToggleGroup libraries = new ToggleGroup();
-        RadioButton rbMain = new RadioButton("Main Library");
+        final RadioButton rbMain = new RadioButton("Main Library");
         rbMain.setToggleGroup(libraries);
         rbMain.setSelected(true);
         RadioButton rbSister = new RadioButton("Sister Library");
@@ -87,10 +86,10 @@ public class LibraryUI extends Application {
         itemsPane.setAlignment(Pos.CENTER);
         itemsPane.setPadding(new Insets(.5, .5, .5, .5));
         itemsPane.setMinHeight(30);
-        CheckBox cbBooks = new CheckBox("Books");
-        CheckBox cbCDs = new CheckBox("CDs");
-        CheckBox cbDVDs = new CheckBox("DVDs");
-        CheckBox cbMagazines = new CheckBox("Magazines");
+        final CheckBox cbBooks = new CheckBox("Books");
+        final CheckBox cbCDs = new CheckBox("CDs");
+        final CheckBox cbDVDs = new CheckBox("DVDs");
+        final CheckBox cbMagazines = new CheckBox("Magazines");
         cbBooks.setSelected(true);
         cbCDs.setSelected(true);
         cbDVDs.setSelected(true);
@@ -162,11 +161,14 @@ public class LibraryUI extends Application {
         //
         // Process the btCheckIn button -- call the checkIn() method
         //
-        btCheckIn.setOnAction(e -> {
-            try {
-                text.appendText(app.checkIn(itemId.getText().trim(), library));
-            } catch (NumberFormatException ex) {
-                text.appendText("\nIncorrect card number format");
+        btCheckIn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    text.appendText(app.checkIn(itemId.getText().trim(), library));
+                } catch (NumberFormatException ex) {
+                    text.appendText("\nIncorrect card number format");
+                }
             }
         });
 
@@ -183,19 +185,19 @@ public class LibraryUI extends Application {
 
         // Create the radio buttons for the States
         final ToggleGroup states = new ToggleGroup();
-        RadioButton rbCheckStatus = new RadioButton("Check Item Status");
+        final RadioButton rbCheckStatus = new RadioButton("Check Item Status");
         rbCheckStatus.setToggleGroup(states);
-        RadioButton rbCheckedIn = new RadioButton("Checked In");
+        final RadioButton rbCheckedIn = new RadioButton("Checked In");
         rbCheckedIn.setToggleGroup(states);
-        RadioButton rbMissing = new RadioButton("Missing");
+        final RadioButton rbMissing = new RadioButton("Missing");
         rbMissing.setToggleGroup(states);
-        RadioButton rbOverdue = new RadioButton("Overdue");
+        final RadioButton rbOverdue = new RadioButton("Overdue");
         rbOverdue.setToggleGroup(states);
-        RadioButton rbShelving = new RadioButton("Shelving");
+        final RadioButton rbShelving = new RadioButton("Shelving");
         rbShelving.setToggleGroup(states);
-        RadioButton rbRemoved = new RadioButton("Removed From Circulation");
+        final RadioButton rbRemoved = new RadioButton("Removed From Circulation");
         rbRemoved.setToggleGroup(states);
-        RadioButton rbReference = new RadioButton("Reference Only");
+        final RadioButton rbReference = new RadioButton("Reference Only");
         rbReference.setToggleGroup(states);
         VBox bottomPane = new VBox();
         bottomPane.setPadding(new Insets(.5, .5, .5, 6.5));
@@ -235,19 +237,19 @@ public class LibraryUI extends Application {
             public void handle(ActionEvent e) {
 //                System.out.println("Click save");
                 if (rbMissing.isSelected()) {
-                    text.appendText(app.changeItemStatus(itemId2.getText().trim(),Item.Status.MISSING, library));
+                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Item.Status.MISSING, library));
                 } else if (rbOverdue.isSelected()) {
-                    text.appendText(app.changeItemStatus(itemId2.getText().trim(),Item.Status.OVERDUE, library));
+                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Item.Status.OVERDUE, library));
                 } else if (rbCheckStatus.isSelected()) {
-                    text.appendText(app.changeItemStatus(itemId2.getText().trim(),Item.Status.CHECK_STATUS, library));
+                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Item.Status.CHECK_STATUS, library));
                 } else if (rbReference.isSelected()) {
-                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Status.REFERENCE_ONLY, library));
+                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Item.Status.REFERENCE_ONLY, library));
                 } else if (rbRemoved.isSelected()) {
-                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Status.REMOVED_FROM_CIRCULATION, library));
-                }  else if (rbShelving.isSelected()) {
-                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Status.SHELVING, library));
+                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Item.Status.REMOVED_FROM_CIRCULATION, library));
+                } else if (rbShelving.isSelected()) {
+                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Item.Status.SHELVING, library));
                 } else if (rbCheckedIn.isSelected()) {
-                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Status.CHECKED_IN, library));
+                    text.appendText(app.changeItemStatus(itemId2.getText().trim(), Item.Status.CHECKED_IN, library));
                 } else {
                     text.appendText("\nNo action taken, there was no status button selected");
                 }
@@ -261,59 +263,74 @@ public class LibraryUI extends Application {
         //
         // Process the btCheckIn button -- call the checkIn() method
         //
-        btChangeItemStatus.setOnAction(e -> {
+        btChangeItemStatus.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
                 changeItemStatusStage.showAndWait();
+            }
         });
 
         //
         // Process the btCheckOut button -- call the checkOut() method
         //
-        btCheckOut.setOnAction(e -> {
-            try {
-                text.appendText(app.checkOut((Integer.parseInt(cardNumber.getText().trim())), itemId.getText().trim(), library));
-            } catch (NumberFormatException ex) {
-                text.appendText("\nIncorrect card number format");
+        btCheckOut.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    text.appendText(app.checkOut((Integer.parseInt(cardNumber.getText().trim())), itemId.getText().trim(), library));
+                } catch (NumberFormatException ex) {
+                    text.appendText("\nIncorrect card number format");
+                }
+
             }
         });
 
         //
         // Process the btCheckedOut button -- call the displayMemberCheckedOutItems() method
         //
-        btCheckedOut.setOnAction(e -> {
-            try {
-                text.clear();
-                text.appendText(app.displayMemberCheckedOutItems((Integer.parseInt(cardNumber.getText().trim()))));
-            } catch (NumberFormatException ex) {
-                text.appendText("\nIncorrect card number format");
+        btCheckedOut.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    text.clear();
+                    text.appendText(app.displayMemberCheckedOutItems((Integer.parseInt(cardNumber.getText().trim()))));
+                } catch (NumberFormatException ex) {
+                    text.appendText("\nIncorrect card number format");
+                }
             }
         });
 
         //
         // Process the btAddMember button -- call the addMember() method
         //
-        btAddMember.setOnAction(e -> {
-            TextInputDialog newMember = new TextInputDialog("New Member");
-            newMember.setTitle("New Member");
-            newMember.setContentText("Enter Member Name:");
-
-            Optional<String> result = newMember.showAndWait();
-            // if Optional contains a value, it will get it and the Controller will add a new member
-            // with the next member ID available via MemberIdServer.
-            if (result.isPresent()) {
-                text.appendText(app.addMember(result.get()));
+        btAddMember.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                JOptionPane newMember = new JOptionPane();
+                String result = (String) newMember.showInputDialog(null, "Enter Member Name:", "New Member", JOptionPane.PLAIN_MESSAGE, null, null, "New Member");
+                // if dialog had input, Controller will add a new member with input name
+                // and the next member ID available via MemberIdServer.
+                if (result != null) {
+                    text.appendText(app.addMember(result));
+                } else {
+                    text.appendText("/nNo member name entered.");
+                }
             }
         });
 
         //
         // Process the btAddFileData button -- call the addFileData() method
         //
-        btAddFileData.setOnAction(e -> {
-            File file = fileChooser.showOpenDialog(primaryStage);
-            if (file != null) {
-                app.addFileData(file, library);
-                text.appendText("\nFile added: " + file.getAbsolutePath());
-            } else {
-                text.appendText("\nNo file added.");
+        btAddFileData.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                File file = fileChooser.showOpenDialog(primaryStage);
+                if (file != null) {
+                    app.addFileData(file, library);
+                    text.appendText("\nFile added: " + file.getAbsolutePath());
+                } else {
+                    text.appendText("\nNo file added.");
+                }
             }
         });
 
@@ -321,22 +338,25 @@ public class LibraryUI extends Application {
         // Process the btDisplay button -- calls the displayLibraryItems() method
         // Masks allow for the selection of more than one Item type to display.
         //
-        btDisplay.setOnAction(e -> {
-            text.clear();
-            int mask = 0;
-            if (cbBooks.isSelected()) {
-                mask += 1;
+        btDisplay.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                text.clear();
+                int mask = 0;
+                if (cbBooks.isSelected()) {
+                    mask += 1;
+                }
+                if (cbCDs.isSelected()) {
+                    mask += 2;
+                }
+                if (cbDVDs.isSelected()) {
+                    mask += 4;
+                }
+                if (cbMagazines.isSelected()) {
+                    mask += 8;
+                }
+                text.appendText(app.displayLibraryItems(mask, library));
             }
-            if (cbCDs.isSelected()) {
-                mask += 2;
-            }
-            if (cbDVDs.isSelected()) {
-                mask += 4;
-            }
-            if (cbMagazines.isSelected()) {
-                mask += 8;
-            }
-            text.appendText(app.displayLibraryItems(mask, library));
         });
 
         //
@@ -347,11 +367,11 @@ public class LibraryUI extends Application {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
                 if (rbMain.isSelected()) {
-                    library = Library.Library.Type.MAIN;
+                    library = Library.Type.MAIN;
                 } else {
-                    library = Library.Library.Type.SISTER;
+                    library = Library.Type.SISTER;
                 }
-                if (library ==  Library.Library.Type.MAIN)
+                if (library == Library.Type.MAIN)
                     text.appendText("\nMain Library:");
                 else
                     text.appendText("\nSister Library:");

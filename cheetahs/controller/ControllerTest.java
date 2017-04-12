@@ -1,11 +1,8 @@
-package Controller;
+package cheetahs.controller;
 
-import Items.Item;
-import Library.Library;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import cheetahs.items.Item;
+import cheetahs.library.Library;
+import org.junit.*;
 
 import java.io.File;
 
@@ -160,7 +157,7 @@ public class ControllerTest {
         file = new File(System.getProperty("user.dir") + "/Test.json");
         testController.addFileDataJson(file, lib);
         assertEquals(8, lib.size());
-        assertEquals("The Stand", lib.getItem("1adf5").getName());
+        Assert.assertEquals("The Stand", lib.getItem("1adf5").getName());
     }
 
     @Test

@@ -2,7 +2,7 @@ participant User
 participant LibraryUI
 participant Controller
 participant Library
-participant Storage
+participant com.Storage
 
 User->LibraryUI:Enter file data
 LibraryUI->Controller: addFileData(file, library)
@@ -11,4 +11,4 @@ loop for all valid items
 Controller->Library: lib.addItem(new Item)
 Library->Library: list.put(item.getId(), item)
 end
-Library->Storage: save changes
+Library->com.Storage: save changes

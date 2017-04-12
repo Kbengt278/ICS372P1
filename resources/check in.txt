@@ -4,7 +4,7 @@ participant Controller
 participant Library
 participant Item
 participant MemberList
-participant Storage
+participant com.Storage
 
 User->LibraryUI: Choose library to use
 User->LibraryUI: Enter item ID
@@ -17,6 +17,6 @@ Library-->Controller: Boolean success status
 Controller->MemberList: getMemberWithItem(item).removeItem(item)
 Controller->Item: item.toString
 Item-->Controller: message = item data as string
-Controller->Storage: save changes
+Controller->com.Storage: save changes
 Controller-->LibraryUI: message
 LibraryUI-->User: Item checked in successfully

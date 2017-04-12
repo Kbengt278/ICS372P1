@@ -1,12 +1,12 @@
-package Storage;
+package cheetahs.storage;
 
-import Controller.Controller;
-import Member.MemberIdServer;
+import cheetahs.controller.Controller;
+import cheetahs.member.MemberIdServer;
 
 import java.io.*;
 
 /**
- * Storage class: this class works with the ControllerData.bin and MemberServerData.bin files
+ * com.Storage class: this class works with the ControllerData.bin and MemberServerData.bin files
  * To create a persistent state for the library items, libraries, and member checkouts.
  * It is dependent on instances of the Controller and MemberIdServer classes.
  * save is called whenever an instance of the Controller class completes the

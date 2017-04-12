@@ -1,6 +1,6 @@
-package Library;
+package cheetahs.library;
 
-import Items.Item;
+import cheetahs.items.Item;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,5 +84,4 @@ public class LibraryTest {
     public void size() throws Exception {
         assertEquals(6, libraryTest.size());
     }
-
 }

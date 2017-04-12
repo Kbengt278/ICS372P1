@@ -5,7 +5,7 @@ participant Library
 participant Item
 participant MemberList
 participant Member
-participant Storage
+participant com.Storage
 
 User->LibraryUI: Choose library to use
 User->LibraryUI: Enter library card number
@@ -22,6 +22,6 @@ Library-->Controller: Boolean success status
 Controller->Member: addItem(itemId)
 Controller->Item: item.toString
 Item-->Controller: message = item data as string
-Controller->Storage: save changes
+Controller->com.Storage: save changes
 Controller-->LibraryUI: message
 LibraryUI-->User: Item checked out successfully, due date is:
