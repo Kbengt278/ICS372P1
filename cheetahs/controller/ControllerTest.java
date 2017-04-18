@@ -5,6 +5,9 @@ import cheetahs.library.Library;
 import org.junit.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -76,6 +79,8 @@ public class ControllerTest {
         itemDvdAtSister = new Item("DVD2", "DVD2", Item.Type.DVD);
         testController.addItemToLibrary(itemDvdAtSister, Library.Type.SISTER);
         testController.checkOut(2, "DVD2", Library.Type.SISTER);
+
+
     }
 
     @After
@@ -141,12 +146,18 @@ public class ControllerTest {
         // First test for a nonexistent file
         //
         File file = new File("TestFileDoesNotExist.json");
-        testController.addFileData(file, Library.Type.MAIN);
+        InputStream input = null;
+        try {
+            input = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        testController.addFileData(input, "json", Library.Type.MAIN);
         //
         // Now test for a wrong file type
         //
         file = new File("TestWrongFileType.txt");
-        testController.addFileData(file, Library.Type.MAIN);
+        testController.addFileData(input, "json", Library.Type.MAIN);
         //
         // Now test with a valid file that has three entries that have errors :
         // 1) No ID (ID = "")
@@ -155,7 +166,7 @@ public class ControllerTest {
         // It then checks that 8 items were added
         //
         file = new File(System.getProperty("user.dir") + "/Test.json");
-        testController.addFileDataJson(file, lib);
+        testController.addFileDataJson(input, lib);
         assertEquals(8, lib.size());
         Assert.assertEquals("The Stand", lib.getItem("1adf5").getName());
     }
@@ -170,7 +181,13 @@ public class ControllerTest {
         // First test for a nonexistent file
         //
         File file = new File("TestFileDoesNotExist.xml");
-        testController.addFileData(file, Library.Type.MAIN);
+        InputStream input = null;
+        try {
+            input = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        testController.addFileData(input, "xml", Library.Type.MAIN);
         //
         // Now test with a valid file that has three entries that have errors :
         // 1) No ID (ID = "")
@@ -179,7 +196,7 @@ public class ControllerTest {
         // It then checks that 4 items were added
         //
         file = new File("Test.xml");
-        testController.addFileDataXml(file, lib);
+        testController.addFileDataXml(input, lib);
         assertEquals("Number of items added is incorrect: ", 4, lib.size());
     }
 
