@@ -20,8 +20,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * This program will take a .JSON or .xml file of items in a Library, and create a collection
@@ -313,7 +312,7 @@ public class LibraryUI extends Application {
                 if (result != null) {
                     text.appendText(app.addMember(result));
                 } else {
-                    text.appendText("/nNo member name entered.");
+                    text.appendText("\nNo member name entered.");
                 }
             }
         });
@@ -325,9 +324,30 @@ public class LibraryUI extends Application {
             @Override
             public void handle(ActionEvent event) {
                 File file = fileChooser.showOpenDialog(primaryStage);
+                InputStream inputStream = null;
+                String fileType = null;
                 if (file != null) {
-                    app.addFileData(file, library);
-                    text.appendText("\nFile added: " + file.getAbsolutePath());
+                    text.appendText("\nFile used: " + file.getAbsolutePath());
+
+                    if (file.getAbsolutePath().toLowerCase().endsWith("json"))
+                        fileType = "json";
+                    else if (file.getAbsolutePath().toLowerCase().endsWith("xml"))
+                        fileType = "xml";
+                    else {
+                        text.appendText("Error: Invalid file type entered.");
+                    }
+
+                    try {
+                        inputStream = new FileInputStream(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (app.addFileData(inputStream, fileType, library)) {
+                        text.appendText("\nFile added: " + file.getAbsolutePath());
+                    } else {
+                        text.appendText("\nFile add failed");
+                    }
                 } else {
                     text.appendText("\nNo file added.");
                 }

@@ -120,30 +120,32 @@ public class Controller implements Serializable {
     /**
      * Adds items from input file to appropriate library.
      *
-     * @param file    file to read data from
+     * @param input   file to read data from
      * @param library library type of where the item is
      */
-    public void addFileData(File file, Library.Type library) {
+    public boolean addFileData(InputStream input, String fileType, Library.Type library) {
         Library lib = getLib(library);
-        if (file.getAbsolutePath().toLowerCase().endsWith("json"))
-            addFileDataJson(file, lib);
-        else if (file.getAbsolutePath().toLowerCase().endsWith("xml"))
-            addFileDataXml(file, lib);
+        if (fileType.toLowerCase().endsWith("json")) {
+            return addFileDataJson(input, lib);
+        } else if (fileType.toLowerCase().endsWith("xml"))
+            return addFileDataXml(input, lib);
         else {
             System.out.println("Error: Invalid file type entered.");
         }
         Storage.save(this);
+        return false;
+    }
     }
 
     /**
      * Reads a JSON file and adds items to com.ui set library.
      * Detects bad file entries and reports them.
      *
-     * @param file file to read data from.
-     * @param lib  library where the item is
+     * @param input file to read data from.
+     * @param lib   library where the item is
      * @return false if file can't be read
      */
-    boolean addFileDataJson(File file, Library lib) {
+    boolean addFileDataJson(InputStream input, Library lib) {
         // id will hold the Item id from the parsed file
         String id = "";
         // type will hold the Item subtype: book, cd, dvd, or magazine
@@ -163,20 +165,16 @@ public class Controller implements Serializable {
         // it flags back to false once we are done going through and the JSONParser event is END_ARRAY.
         boolean startArray = false;
 
-        Scanner input = null;
+        Scanner scanner = new Scanner(input);
         try {
-            input = new Scanner(file);
-            while (input.hasNext()) {
-                textLine = textLine + input.nextLine() + "\n";
+            while (scanner.hasNext()) {
+                textLine = textLine + scanner.nextLine() + "\n";
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Couldn't find file");
-            return false;
         } catch (NullPointerException e) {
             System.out.println("Couldn't find file");
         }
-        input.close();
-
+        scanner.close();
+      
         JsonParser parser = Json.createParser(new StringReader(textLine));
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
@@ -257,11 +255,11 @@ public class Controller implements Serializable {
      * Reads a XML file and adds items to com.ui set library.
      * Detects bad file entries and reports them.
      *
-     * @param file file to read data from
-     * @param lib  library where the item is
+     * @param input file to read data from
+     * @param lib   library where the item is
      * @return false if file can't be read
      */
-    boolean addFileDataXml(File file, Library lib) {
+    boolean addFileDataXml(InputStream input, Library lib) {
         // id will hold the Item id of a DOM object from the parsed file
         String id = "";
         // type will hold the Item subtype: book, cd, dvd, or magazine
@@ -283,7 +281,7 @@ public class Controller implements Serializable {
             // dBuilder created using the DocumentBuilderFactor instance
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             // parses the XML file using the DocumentBuilder and returns a DOM Document object
-            doc = dBuilder.parse(file);
+            doc = dBuilder.parse(input);
             // getDocumentElement directly accesses the child node of the document element, and normalize
             // makes it so the text of a given node is combined and only separated by the actual structure
             // of the text nodes. It eliminates any empty text that's part of the node, and combines
