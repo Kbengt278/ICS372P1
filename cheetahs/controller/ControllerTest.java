@@ -79,8 +79,6 @@ public class ControllerTest {
         itemDvdAtSister = new Item("DVD2", "DVD2", Item.Type.DVD);
         testController.addItemToLibrary(itemDvdAtSister, Library.Type.SISTER);
         testController.checkOut(2, "DVD2", Library.Type.SISTER);
-
-
     }
 
     @After
