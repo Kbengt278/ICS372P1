@@ -142,6 +142,7 @@ public class Controller implements Serializable {
         Storage.save(this);
         return success;
     }
+    }
 
     /**
      * Reads a JSON file and adds items to com.ui set library.
@@ -180,7 +181,7 @@ public class Controller implements Serializable {
             System.out.println("Couldn't find file");
         }
         scanner.close();
-
+      
         JsonParser parser = Json.createParser(new StringReader(textLine));
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
