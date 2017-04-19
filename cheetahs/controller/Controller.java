@@ -17,7 +17,10 @@ import javax.json.stream.JsonParser;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -125,15 +128,19 @@ public class Controller implements Serializable {
      */
     public boolean addFileData(InputStream input, String fileType, Library.Type library) {
         Library lib = getLib(library);
+        boolean success = false;
         if (fileType.toLowerCase().endsWith("json")) {
-            return addFileDataJson(input, lib);
-        } else if (fileType.toLowerCase().endsWith("xml"))
-            return addFileDataXml(input, lib);
-        else {
+            addFileDataJson(input, lib);
+            success = true;
+        } else if (fileType.toLowerCase().endsWith("xml")) {
+            addFileDataXml(input, lib);
+            success = true;
+        } else {
             System.out.println("Error: Invalid file type entered.");
+            success = false;
         }
         Storage.save(this);
-        return false;
+        return success;
     }
 
     /**
