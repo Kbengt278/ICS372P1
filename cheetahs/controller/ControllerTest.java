@@ -30,7 +30,7 @@ public class ControllerTest {
 
     @BeforeClass
     public static void setUpClass() {
-        testController = new Controller();
+        testController = new Controller(System.getProperty("user.dir") + "\\");
         testController.addMember("Member 1");
         testController.addMember("Member 2");
     }

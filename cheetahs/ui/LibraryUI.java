@@ -49,7 +49,7 @@ public class LibraryUI extends Application {
     private Library.Type library = Library.Type.MAIN;
     // Instantiation of the Controller object that will load any serialized Controller data, and then be used
     // in the execution of the application.
-    private Controller app = new Controller();
+    private Controller app = new Controller(System.getProperty("user.dir") + "\\");
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -57,7 +57,7 @@ public class LibraryUI extends Application {
 
     @Override // Override the start method in the Controller class
     public void start(final Stage primaryStage) throws IOException {
-        app = Storage.loadController(); // Load data from file
+        app = Storage.loadController(System.getProperty("user.dir") + "\\"); // Load data from file
 
         // Create a border pane
         VBox pane = new VBox();
@@ -119,7 +119,7 @@ public class LibraryUI extends Application {
         rightTopPane.getChildren().addAll(itemId, cardNumber, btAddFileData, btAddMember, btCheckOut,
                 btCheckIn, btChangeItemStatus, btCheckedOut, btDisplay);
 
-        // put the VBoxs in the HBox Top pane
+        // put the VBoxes in the HBox Top pane
         topPane.getChildren().addAll(leftTopPane, rightTopPane);
         HBox.setHgrow(leftTopPane, Priority.ALWAYS);
         HBox.setHgrow(rightTopPane, Priority.ALWAYS);
@@ -212,7 +212,7 @@ public class LibraryUI extends Application {
         VBox rightTopPane2 = new VBox();
         rightTopPane2.getChildren().addAll(itemId2);
 
-        // put the VBoxs in the HBox Top pane
+        // put the VBoxes in the HBox Top pane
         topPane2.getChildren().addAll(leftTopPane2, rightTopPane2);
         HBox.setHgrow(leftTopPane2, Priority.ALWAYS);
         HBox.setHgrow(rightTopPane2, Priority.ALWAYS);
@@ -225,7 +225,6 @@ public class LibraryUI extends Application {
 
 
         pane2.getChildren().addAll(topPane2, bottomPane, buttonPane);
-//        changeItemStatusStage.setTitle("Change Item State");
         changeItemStatusStage.setTitle("Change/Check Item Status"); // Set the stage title
         changeItemStatusStage.setHeight(250);
         changeItemStatusStage.setWidth(300);
@@ -234,7 +233,6 @@ public class LibraryUI extends Application {
         btSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-//                System.out.println("Click save");
                 if (rbMissing.isSelected()) {
                     text.appendText(app.changeItemStatus(itemId2.getText().trim(), Item.Status.MISSING, library));
                 } else if (rbOverdue.isSelected()) {
