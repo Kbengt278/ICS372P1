@@ -35,8 +35,21 @@ public class Controller implements Serializable {
     private Library main = new Library(Library.Type.MAIN);
     private Library sister = new Library(Library.Type.SISTER);
     private MemberList memberList = new MemberList();
+    private String savePath;
 
     public Controller() {
+    }
+
+    public Controller(String savePath) {
+        this.savePath = savePath;
+    }
+
+    public String getSavePath() {
+        return savePath;
+    }
+
+    public void setSavePath(String savePath) {
+        this.savePath = savePath;
     }
 
     /**
@@ -66,7 +79,7 @@ public class Controller implements Serializable {
         } else
             message += "\n\n***** Library card number " + cardNumber + " is invalid *****";
 
-        Storage.save(this);
+        Storage.save(this, savePath);
         return message;
     }
 
@@ -95,7 +108,7 @@ public class Controller implements Serializable {
                 message += "\n\n***** Error: Item " + itemId + " is marked as checked out but no member has it checked out. *****";
             }
         }
-        Storage.save(this);
+        Storage.save(this, savePath);
         return message;
     }
 
@@ -116,7 +129,7 @@ public class Controller implements Serializable {
             message += "\n\n***** Status change Successful *****\n";
             message += lib.getItem(itemId).toString() + " Status : " + lib.getItem(itemId).getStatus();
         }
-        Storage.save(this);
+        Storage.save(this, savePath);
         return message;
     }
 
@@ -139,7 +152,7 @@ public class Controller implements Serializable {
             System.out.println("Error: Invalid file type entered.");
             success = false;
         }
-        Storage.save(this);
+        Storage.save(this, savePath);
         return success;
     }
 
@@ -314,7 +327,7 @@ public class Controller implements Serializable {
                         type = eElement.getAttribute("type");
                         name = eElement.getElementsByTagName("Name").item(0).getTextContent();
                     }
-                    // If one of the mandatory attributes is null, don't add it. 
+                    // If one of the mandatory attributes is null, don't add it.
                     catch (NullPointerException e) {
                         System.out.println("\nEntry missing an ID, type, and/or name: ID = " + id + " , " +
                                 "Type = " + type + ", " + "Name = " + name);
@@ -381,7 +394,7 @@ public class Controller implements Serializable {
         message += ("\n\n***** New Member: " + member.getName().trim() + " Created *****" +
                 "\n-- Library card number is: " + member.getLibraryCardNumber());
 
-        Storage.save(this, MemberIdServer.instance());
+        Storage.save(this, MemberIdServer.instance(), savePath);
         return message;
     }
 
