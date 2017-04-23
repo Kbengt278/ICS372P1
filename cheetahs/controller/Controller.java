@@ -143,11 +143,9 @@ public class Controller implements Serializable {
         Library lib = getLib(library);
         boolean success = false;
         if (fileType.toLowerCase().endsWith("json")) {
-            addFileDataJson(input, lib);
-            success = true;
+            success = addFileDataJson(input, lib);
         } else if (fileType.toLowerCase().endsWith("xml")) {
-            addFileDataXml(input, lib);
-            success = true;
+            success = addFileDataXml(input, lib);
         } else {
             System.out.println("Error: Invalid file type entered.");
             success = false;
