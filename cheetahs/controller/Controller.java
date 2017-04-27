@@ -120,9 +120,13 @@ public class Controller implements Serializable {
      * @return text to display to user
      */
     public String changeItemStatus(String itemId, Item.Status status, Library.Type library) {
-        String message = "";
         Library lib = getLib(library);
+        Item item = lib.getItem(itemId);
+        String message = "";
 
+        if (status == Item.Status.CHECKED_IN && item.getStatus() == Item.Status.CHECKED_OUT) {
+            return checkIn(itemId, library);
+        }
         if (!lib.changeStatus(itemId, status))
             message += "\n\n***** Item " + itemId + " does not exist *****";
         else {
@@ -191,7 +195,7 @@ public class Controller implements Serializable {
             System.out.println("Couldn't find file");
         }
         scanner.close();
-      
+
         JsonParser parser = Json.createParser(new StringReader(textLine));
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
@@ -452,7 +456,7 @@ public class Controller implements Serializable {
             }
             message += "\n---------------------------------------------------------------------------------------------------------";
         } else
-            message += ("\n\n***** Library card number " + cardNumber + " is invalid *****");
+            message += ("\n\n***** Library card number " + cardNumber + " is invalid *****\n");
         return message;
     }
 
